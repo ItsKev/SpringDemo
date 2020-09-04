@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class NotFoundException extends RuntimeException {
 
-    private final Object value;
+  private final Object value;
 
-    public NotFoundException(String message, Object value) {
-        super(message);
-        this.value = value;
-    }
+  public NotFoundException(String message, Object value) {
+    super(message);
+    this.value = value;
+  }
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         "Internal Server Error",
         request.getDescription(false));
     return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException exception, WebRequest request) {
+    log.warn(exception.getMessage());
+    ExceptionResponse exceptionResponse = new ExceptionResponse(
+        new Date(),
+        exception.getMessage(),
+        request.getDescription(false));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler(NotFoundException.class)
